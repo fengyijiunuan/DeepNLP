@@ -1,0 +1,60 @@
+import sys
+import matplotlib.pyplot as plt
+import numpy as np
+from collections import Counter
+import jieba
+import os
+
+def load_stopwords(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        stopwords = file.read().splitlines()
+    return stopwords
+
+def remove_stopwords(text, stopwords):
+    words = text.split()
+    filtered_text = [word for word in words if word not in stopwords]
+    return ' '.join(filtered_text)
+
+
+def zipf_law(text):
+
+    # 数据预处理 去掉标点符号停用词
+    stopwords_file_path = r'C:\Users\86157\Desktop\1\cn_stopwords.txt'
+    cn_stopwords = load_stopwords(stopwords_file_path)
+    text = remove_stopwords(text, cn_stopwords)
+
+    # 分词
+    words = list(jieba.cut(text))
+
+    # 计算词频
+    word_freq = Counter(words)
+
+    # 根据词频排序
+    sorted_word_freq = sorted(word_freq.items(), key=lambda x: x[1], reverse=True)
+
+    # 提取词频和排名
+    freq = [item[1] for item in sorted_word_freq]
+    rank = np.arange(1, len(freq) + 1)
+
+    # 绘制频率与排名的对数图
+    plt.figure(figsize=(10, 6))
+    plt.plot(np.log(rank), np.log(freq), marker='o', linestyle='')
+    plt.title("Zipf's Law Verification")
+    plt.xlabel('log(Rank)')
+    plt.ylabel('log(Frequency)')
+    plt.grid(True)
+    plt.show()
+
+
+
+
+train_dirs = os.listdir(r"C:\Users\86157\Desktop\jyxstxtqj_downcc.com")
+txt = ""
+# 读取中文文本
+for name in train_dirs:
+    print(name)
+    with open(r'C:\Users\86157\Desktop\jyxstxtqj_downcc.com/'+name, 'r', encoding='gb18030') as file:
+        txt = txt + file.read()
+
+
+zipf_law(txt)
