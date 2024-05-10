@@ -152,7 +152,7 @@ def main(token_num, topic_num, stop_words_list, book_para_jieba, book_para_char)
 if __name__ == '__main__':
     # 设置K的初始token为1000
     K = 1000
-    # 设置T的初始主题为500
+    # 设置T的初始主题为20
     T = 20
     # 获取书名列表
     with open(r"C:\Users\86157\Desktop\项目\深度学习与自然语言处理作业\1\inf.txt", 'r', encoding='gb18030') as f:
